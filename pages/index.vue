@@ -6,12 +6,15 @@
             <form class="flex flex-wrap w-full">
                 <div class="w-full md:w-1/3 p-4">
                     <VSelect v-model="operation" label="Operations" :items="operations"></VSelect>
+                    <span class="block text-sm text-red-500 p-2">{{ operationInputError }}</span>
                 </div>
                 <div class="w-full md:w-1/3 p-4">
                     <VSelect v-model="operationsCount" label="No. of Operations" :items="numberOfEntries"></VSelect>
+                    <span class="block text-sm text-red-500 p-2">{{ operationsCountInputError }}</span>
                 </div>
                 <div class="w-full md:w-1/3 p-4">
                     <VSelect v-model="groupsCount" label="Divided into" :items="numberOfGroups"></VSelect>
+                    <span class="block text-sm text-red-500 p-2">{{ groupsCountInputError }}</span>
                 </div>
             </form>
         </div>
@@ -57,6 +60,9 @@ export default {
             operation: '',
             operationsCount: '',
             groupsCount: '',
+            operationInputError: '',
+            operationsCountInputError: '',
+            groupsCountInputError: '',
             operations: [
                 { text: 'Insert', value: 'insert' },
                 { text: 'Update', value: 'update' },
@@ -108,6 +114,28 @@ export default {
         },
         async execute() {
             try {
+                let isError = false;
+                if(this.operation === ''){
+                    this.operationInputError = 'Operation type is required';
+                    isError = true;
+                }else 
+                    this.operationInputError = '';
+                
+                if(this.operationsCount === ''){
+                    this.operationsCountInputError = 'Number of operations is required';
+                    isError = true;
+                } else 
+                    this.operationsCountInputError = '';
+                
+                if(this.groupsCount === ''){
+                    this.groupsCountInputError = 'Groups of operations is required';
+                    isError = true;
+                } else 
+                    this.groupsCountInputError = '';
+
+                if (isError) return;
+                
+                
                 const result = await this.$axios.get(`/api/benchmark/${this.operation}`, {
                     params: {
                         operationsCount: this.operationsCount,
