@@ -21,7 +21,8 @@ export default {
             {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
+            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+            {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;600;700&display=swap'}
         ]
     },
     /*
@@ -56,10 +57,16 @@ export default {
     ** Axios module configuration
     ** See https://axios.nuxtjs.org/options
     */
-    axios: {},
+    axios: {
+        baseUrl: '/api'
+    },
     /*
     ** Build configuration
     ** See https://nuxtjs.org/api/configuration-build/
     */
-    build: {}
+    build: {},
+    
+    serverMiddleware: [
+        '~/api/index.js'
+    ]
 }
